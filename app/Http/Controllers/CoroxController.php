@@ -1,7 +1,7 @@
 <?php
 
 namespace Corox\Http\Controllers;
-
+use Corox\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Hash;

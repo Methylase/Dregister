@@ -1,8 +1,6 @@
 <?php
-
-namespace Corox\Http\Controllers;
-use Corox\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+namespace Corox\Http\Controllers;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Pagination\Paginator;
@@ -11,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Query\Builder;
+use Corox\Http\Controllers\Controller;
 use Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;

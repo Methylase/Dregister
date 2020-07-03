@@ -53,14 +53,14 @@
            $('.del_staff').attr('id', 'del_staff'+delStaff[1])
            $('#del_staff'+delStaff[1]).on('click', function(){
             var token =$("meta[name='csrf-token']").attr("content");
-            value= {
+            values= {
              "staffId": delStaff[1],
              "_token": token,
             }
             $.ajax({
                type: "DELETE",
                url: "/Dregister/delete-staff/"+delStaff[1],
-               data: value,
+               data: values,
             }).done(function(result){
               if (result.success=='success'){
                 $('#confirm-delete').modal('hide');
@@ -609,7 +609,7 @@
                            
                         <div class="card-body">
                           <div class="table-responsive">
-                           @if(isset($staffInformation))
+                           @if(isset($staffInformation) && $staffInformation != null)
                             <table class="table table-bordered  border-bottom-info" id="dataTable" width="100%" cellspacing="0">
                               <thead>
                                 <tr>

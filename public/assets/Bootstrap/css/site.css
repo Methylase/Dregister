@@ -1,0 +1,43 @@
+.search-container {
+    margin: 5px;
+}
+
+.brand h3{
+    color: white;
+    text-align: left;
+    font-family: serif;
+    font-style: italic;
+    text-shadow: 3px 3px 5px #ffffff;
+    letter-spacing: 3px;
+}
+
+footer{
+    background-color: #262626;
+    clear: both;
+    height: 50px;
+}
+
+#h1Anim{                        
+    -webkit-animation-duration: 1000s;
+    animation-delay: 1s;
+    animation-name: h1Animate;
+    animation-iteration-count: 1;
+    visibility: hidden;
+    letter-spacing: 3px;
+}
+@keyframes h1Animate{
+    0%   {color:white;left:50%; top:0px;}
+    100%  {text-align: center; color:white; left:50%; top:250px; visibility: visible;}
+}
+#pAnim{                        
+    -webkit-animation-duration: 1000s;
+    animation-delay: 1s;
+    animation-name: pAnimate;
+    animation-iteration-count: 1;
+    visibility: hidden;
+    font-size: 16px;
+}
+@keyframes pAnimate{
+    0%   {color:white;}
+    100%  {color:white; visibility: visible;}
+}

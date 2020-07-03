@@ -1,0 +1,294 @@
+  if(RegisterStaffTeacher::where(["class_id"=>$request->classId,"corox_model_id"=>$userId])->exists()){
+                              $teacher =RegisterStaffTeacher::where("class_id",$request->classId)->first();
+                              
+                              if($request->staffId == $teacher->staff_id){
+                                        $staff =RegisterStaffInformation::where("id",$teacher->staff_id)->first();
+                                        $class =RegisterClasses::where("id",$request->classId)->first();
+                                        if(isset($request->teacherRole[0]) && isset($request->teacherRole[1]) && $teacher->teacher_role ==$request->teacherRole[0].','.$request->teacherRole[1]){
+                                                  //return response()->json(['success'=>'danger','message'=> $staff->staff_firstname.' '.$staff->staff_lastname.' has already been assigned as a '.$request->teacherRole[0].' and as a '. $request->teacherRole[1].' to '.$class->class_name.' class']);                                                              
+                                        }
+                                        if( $request->teacherRole[0] =="classteacher" && !isset($request->teacherRole[1])){
+                                                  $newTeacherRole = $teacher->teacher_role.','.$request->teacherRole[0];
+                                                  if( $teacher->teacher_role  == $request->teacherRole[0]){
+                                                           
+                                                            return response()->json(['success'=>'danger','message'=> $staff->staff_firstname.' '.$staff->staff_lastname.' has already been assigned as a '.$teacher->teacher_role.' you can\'t assign '.$request->staffName.' as a '.$request->teacherRole[0].' to '.$class->class_name.' class']);                           
+                                                  }elseif( $teacher->teacher_role == "subjectteacher,classteacher"){
+                                                            $teacherRole =explode(',',$teacher->teacher_role);
+                                                            //return response()->json(['success'=>'danger','message'=> $staff->staff_firstname.' '.$staff->staff_lastname.' has already been assigned as a '.$teacherRole[0].' and as a '. $teacherRole[1].' you can\'t assign '.$request->staffName.' as a '.$request->teacherRole[0].' to '.$class->class_name.' class']);                           
+                                                  }elseif(isset($teacherRole[1]) && $request->teacheRole[0] == $teacherRole[1]){
+                                                            $teacherRole =explode(',',$teacher->teacher_role);
+                                                            return response()->json(['success'=>'danger','message'=> $staff->staff_firstname.' '.$staff->staff_lastname.' has already been assigned as a '.$teacherRole[0].' and as a '. $teacherRole[1].' you can\'t assign '.$request->staffName.' as a '.$request->teacherRole[0].' to '.$class->class_name.' class']);                           
+                                                  }else{
+                                                            return response()->json(['success'=>'danger','message'=> $staff->staff_firstname.' '.$staff->staff_lastname.' has already been assigned as a '.$request->teacherRole[0].' to '.$class->class_name.' class']);             
+                                                          /*  $checkRole = RegisterStaffTeacher::where(["staff_id"=>$request->staffId])->first();
+                                                            if($checkRole->update(["teacher_role"=>$newTeacherRole])){
+                                                                       return response()->json(['success'=>'success','message'=>'Yofru have successfully assigned staff with a name '.$request->staffName.' as a '.$teacher->teacher_role. ' and  as a '.$request->teacherRole[0]]);      
+                                                            }  */                          
+                                                  }
+                                    
+                                        }
+                                        return response()->json(['success'=>'danger','message'=> $staff->staff_firstname.' '.$staff->staff_lastname.' has already been assigned as a '.$request->teacherRole[0].' to '.$class->class_name.' class']);             
+                              }
+                              $teacher =RegisterStaffTeacher::where("class_id",$request->classId)->first();
+                               $staff =RegisterStaffInformation::where("id",$teacher->staff_id)->first();
+                               $class =RegisterClasses::where("id",$request->classId)->first();
+                               if($teacher->teacher_role == $request->teacherRole[0] && $request->classId == $teacher->class_id){
+                                       
+                                        return response()->json(['success'=>'danger','message'=> $staff->staff_firstname.' '.$staff->staff_lastname.'  has already been assigned '.$teacher->teacher_role.' you can\'t assign '.$request->staffName.' as a '.$request->teacherRole[0].' to '.$class->class_name.' class']);                                                     
+                               }elseif($teacher->teacher_role != $request->teacherRole[0] && $request->classId == $teacher->class_id){
+                                       //done
+                                        if( $teacher->teacher_role  == "classteacher"){
+                                                  //done
+                                                  $newTeacherRole = $request->teacherRole[0].','.$teacher->teacher_role;
+                                                
+                                                    //$teacherRole =explode(',',$checkRole->teacher_role);
+                                                  if( $teacher->teacher_role == "subjectteacher,classteacher"){
+                                                            $teacherRole =explode(',',$teacher->teacher_role);
+                                                            return response()->json(['success'=>'danger','message'=> $staff->staff_firstname.' '.$staff->staff_lastname.' has already been assigned as a '.$teacherRole[0].' and as a '. $teacherRole[1].' you can\'t assign '.$request->staffName.' as a '.$request->teacherRole[0].' to '.$class->class_name.' class']);                           
+                                                  }elseif(isset($teacherRole[1]) && $request->teacheRole == $teacherRole[1]){
+                                                            $teacherRole =explode(',',$teacher->teacher_role);
+                                                            return response()->json(['success'=>'danger','message'=> $staff->staff_firstname.' '.$staff->staff_lastname.' has already been assigned as a '.$teacherRole[0].' and as a '. $teacherRole[1].' you can\'t assign '.$request->staffName.' as a '.$request->teacherRole[0].' to '.$class->class_name.' class']);                           
+                                                  }else{
+                                                              $checkRole = RegisterStaffTeacher::where(["staff_id"=>$request->staffId])->first();
+                                                            if($checkRole->update(["teacher_role"=>$newTeacherRole])){
+                                                                       return response()->json(['success'=>'success','message'=>'You have successfully assigned staff with a name '.$request->staffName.' as a'.$teacher->teacher_role. ' and  as a '.$request->teacherRole[0]]);      
+                                                            }                                                             
+                                                  }                                                            
+                                                                                         
+                                            
+                                              
+                                        return response()->json(['success'=>'danger','message'=> $staff->staff_firstname.' '.$staff->staff_lastname.' has already been assigned as a '.$teacher->teacher_role.' you can\'t assign '.$request->staffName.' as a '.$request->teacherRole[0].' to '.$class->class_name.' class']);                           
+                                        }elseif($teacher->teacher_role  == "subjectteacher"){
+                                                  //done
+                                                  $newTeacherRole = $request->teacherRole[0].','.$teacher->teacher_role;
+                                                  $checkRole = RegisterStaffTeacher::where(["staff_id"=>$request->staffId])->first();
+                                                  if( $teacher->teacher_role == "subjectteacher,classteacher"){
+                                                            $teacherRole =explode(',',$teacher->teacher_role);
+                                                            return response()->json(['success'=>'danger','message'=> $staff->staff_firstname.' '.$staff->staff_lastname.' has already been assigned as a '.$teacherRole[0].' and as a '. $teacherRole[1].' you can\'t assign '.$request->staffName.' as a '.$request->teacherRole[0].' to '.$class->class_name.' class']);                           
+                                                  }elseif(isset($teacherRole[1]) && $request->teacheRole == $teacherRole[1]){
+                                                            $teacherRole =explode(',',$teacher->teacher_role);
+                                                            return response()->json(['success'=>'danger','message'=> $staff->staff_firstname.' '.$staff->staff_lastname.' has already been assigned as a '.$teacherRole[0].' and as a '. $teacherRole[1].' you can\'t assign '.$request->staffName.' as a '.$request->teacherRole[0].' to '.$class->class_name.' class']);                           
+                                                  }else{
+                                                            $checkRole = RegisterStaffTeacher::where(["staff_id"=>$request->staffId])->first();
+                                                            if($checkRole->update(["teacher_role"=>$newTeacherRole])){
+                                                                       return response()->json(['success'=>'success','message'=>'You have successfully assigned staff with a name '.$request->staffName.' as a'.$teacher->teacher_role. ' and  as a '.$request->teacherRole[0]]);      
+                                                            }                                                             
+                                                  }                                     //done
+                                        }                                                  
+                                        $newTeacherRole = $request->teacherRole[0].','.$teacher->teacher_role;
+                                        $checkRole = RegisterStaffTeacher::where(["staff_id"=>$request->staffId])->first();
+                                        if( $teacher->teacher_role == "subjectteacher,classteacher"){
+                                                  $teacherRole =explode(',',$teacher->teacher_role);
+                                                  return response()->json(['success'=>'danger','message'=> $staff->staff_firstname.' '.$staff->staff_lastname.' has already been assigned as a '.$teacherRole[0].' and as a '. $teacherRole[1].' you can\'t assign '.$request->staffName.' as a '.$request->teacherRole[0].' to '.$class->class_name.' class']);                           
+                                           
+                                                  if($checkRole->update(["teacher_role"=>$newTeacherRole])){
+                                                             return response()->json(['success'=>'success','message'=>'You have successfully assigned staff with a name '.$request->staffName.' as a'.$teacher->teacher_role. ' and  as a '.$request->teacherRole[0]]);      
+                                                  }                                                   
+                                        }
+                                        
+                                      /*  if( $teacher->teacher_role == "subjectteacher,classteacher"){
+                                                  $teacherRole =explode(',',$teacher->teacher_role);
+                                                  return response()->json(['success'=>'danger','message'=> $staff->staff_firstname.' '.$staff->staff_lastname.' has already been assigned as a '.$teacherRole[0].' and as a '. $teacherRole[1].' you can\'t assign '.$request->staffName.' as a '.$request->teacherRole[0].' to '.$class->class_name.' class']);                           
+                                        }
+                                         $newTeacherRole = $teacher->teacher_role.','.$request->teacherRole[0];
+                                        $checkRole = RegisterStaffTeacher::where(["staff_id"=>$request->staffId])->first();
+                                        if($checkRole->update(["teacher_role"=>$newTeacherRole])){
+                                                   return response()->json(['success'=>'success','message'=>'You have successfully assigned staff with a name '.$request->staffName.' as a'.$teacher->teacher_role. ' and  as a'.$request->teacherRole[0]]);      
+                                        }*/  
+                                        return response()->json(['success'=>'danger','message'=> $staff->staff_firstname.' '.$staff->staff_lastname.'  has already been assigned '.$teacher->teacher_role.' you can\'t assign '.$request->staffName.' as a '.$request->teacherRole[0].' to '.$class->class_name.' class']);                                                     
+                               }elseif($teacher->teacher_role == $request->teacherRole[0].','.$request->teacherRole[1] && $request->classId == $teacher->class_id){
+                                        $teacherRole =explode(',',$teacher->teacher_role);
+                                        return response()->json(['success'=>'danger','message'=> $staff->staff_firstname.' '.$staff->staff_lastname.'  has already been assigned '.$teacherRole[0].' and as a '. $teacherRole[1].' you can\'t assign '.$request->staffName.' as a '.$request->teacherRole.' to'.$class->class_name.' class']);                                          
+                               }        
+                    }elseif(RegisterStaffTeacher::where(["staff_id"=>$request->staffId,"corox_model_id"=>$userId])->exists()){
+                              $teacher =RegisterStaffTeacher::where("staff_id",$request->staffId)->first();
+                              $class =RegisterClasses::where("id",$teacher->class_id)->first();
+                              if(isset($request->teacherRole[0])  && $teacher->teacher_role =="subjectteacher,classteacher"){
+                                        $teacherRole =explode(',',$teacher->teacher_role);
+                                        //return response()->json(['success'=>'danger','message'=>  $request->staffName.' has already been assigned as a '.$teacherRole[0].' and as a '. $teacherRole[1].' to '.$class->class_name.' class']);                                                              
+                              }
+                              if(isset($request->teacherRole[0])  && $teacher->teacher_role =="subjectteacher"){
+                                        return response()->json(['success'=>'danger','message'=>  $request->staffName.' has already been assigned as a '.$request->teacherRole[0].' to '.$class->class_name.' class']);                                                              
+                              }
+                              
+                    }                    
+                    $class =RegisterClasses::where("id",$request->classId)->first();
+                              if( $request->classId == 2){
+                                        //return response()->json(['success'=>'danger','message'=>  $request->staffName.' has already been assigned as a '.$request->teacherRole[0].' to '.$class->class_name.' class']);                                           
+                              }                     
+                    if( $request->teacherRole[0] =="classteacher" && !isset($request->teacherRole[1])){
+                           $teacherRole = $request->teacherRole[0];  
+                    }elseif($request->teacherRole[0] == "subjectteacher" && !isset($request->teacherRole[1])){
+                             $teacherRole = $request->teacherRole[0]; 
+                    }elseif( $request->teacherRole[0].','.$request->teacherRole[1] == "subjectteacher,classteacher"){
+                                
+                              $teacherRole = $request->teacherRole[0].','.$request->teacherRole[1]; 
+                    }
+                    $teacher= new RegisterStaffTeacher;
+                    $teacher->staff_id=$request->staffId;
+                    $teacher->class_id=$request->classId;
+                    $teacher->teacher_role= $teacherRole;                    
+                    $teacher->corox_model_id = $userId;
+                    if($teacher->save()){
+                             
+                    if( $request->teacherRole[0] =="classteacher" && !isset($request->teacherRole[1])){
+                              $teacherRole = $request->teacherRole[0];
+                              return response()->json(['success'=>'success','message'=>'You have successfully assigned staff with a name '.$request->staffName.' as a '.$teacherRole.' '.$class->class_name]);                           
+                    }elseif($request->teacherRole[0] == "subjectteacher" && !isset($request->teacherRole[1])){
+                             $teacherRole = $request->teacherRole[0];
+                              return response()->json(['success'=>'success','message'=>'You have successfully assigned staff with a name '.$request->staffName.' as a '.$teacherRole.' '.$class->class_name]);                                                      
+                    }elseif($request->teacherRole[0].','.$request->teacherRole[1] == "subjectteacher,classteacher"){
+                              $teacherRole = implode(',',$request->teacherRole);
+                              return response()->json(['success'=>'success','message'=>'You have successfully assigned staff with a name '.$request->staffName.' as a '.$request->teacherRole[0].' and as a '.$request->teacherRole[1].' to '.$class->class_name.' class']);                                                       
+                    }                         
+      
+                    }else{
+                              return response()->json(['success'=>'danger','message'=> ' Assigning staff with a name '.$request->staffName.' as a teacher is not successful']);     
+                    }
+                    
+                    
+                    
+                                           <table class=" table table-bordered  border-bottom-info" id="dataTable" width="100%" cellspacing="0">
+                           <tr>
+                           <th>S/N</th>
+                            <th>Student Name</th>
+                             <th>Monday</th>
+                             <th>Tuesday</th>
+                             <th>Wednesday</th>
+                             <th>Thurday</th>
+                             <th>Friday</th>
+                           </tr>
+                           @php$i=1
+                           @endphp
+                            @foreach($studentInformation as $student)
+                                  <tr>
+                                     <td>{{$i}}</td>
+                                     <td>{{ucfirst($student->student_firstname).' '.ucfirst($student->student_lastname)}}</td>
+                                     <td>
+                                       <label for="gender" class="checkbox-inline text-info">M</label>
+                                       <input type="checkbox" id="mon_mon" name="gender" >
+                                       <label for="gender" class="checkbox-inline text-info">A</label>                                                                     
+                                       <input type="checkbox" id="mon_aft" name="gender">
+                                     </td>
+                                     <td>
+                                       <label for="gender" class="checkbox-inline text-info">M</label>
+                                       <input type="checkbox" id="tue_mon" name="gender" value="male">
+                                       <label for="gender" class="checkbox-inline text-info">A</label>                                                                     
+                                       <input type="checkbox" id="tue_aft" name="gender">
+                                     </td>
+                                     <td>
+                                       <label for="gender" class="checkbox-inline text-info">M</label>
+                                       <input type="checkbox" id="wed_mon" name="gender" value="male">
+                                       <label for="gender" class="checkbox-inline text-info">A</label>                                                                     
+                                       <input type="checkbox" id="wed_aft" name="gender">
+                                     </td>
+                                     <td>
+                                       <label for="gender" class="checkbox-inline text-info">M</label>
+                                       <input type="checkbox" id="thur_mon" name="gender" value="male">
+                                       <label for="gender" class="checkbox-inline text-info">A</label>                                                                     
+                                       <input type="checkbox" id="thur_aft" name="gender">
+                                     </td>
+                                     <td>
+                                       <label for="gender" class="checkbox-inline text-info">M</label>
+                                       <input type="checkbox" id="fri_mon" name="gender" value="male">
+                                       <label for="gender" class="checkbox-inline text-info">A</label>                                                                     
+                                       <input type="checkbox" id="fri_aft" name="gender">
+                                     </td>                                            
+                                  </tr>
+                            @php$i++
+                            @endphp
+                            @endforeach
+                       </table>
+                       
+                       
+                 $(".table-responsive").prepend(result.message +'<div class="row col-md-12">'+
+                     if (message.hasPages) { + 
+                      '<div class="col-md-6  col-sm-6">'+
+                         '<ul class="pagination">'+
+                            '<li>Showing ' + message.currentPage + ' to ' + message.perPage + ' of ' + message.total + ' entries</li>'+
+                         '</ul>'+                          
+                      '</div>'+
+                     } 
+                     if (message.hasPages) {
+                        '<div class="offset-md-2 col-md-4 offset-sm-2 col-sm-4">'+
+                           if( message.lastPage > 1){ 
+                           '<ul class="pagination">' +
+                             '<li class="' + message.currentPage == 1  ? 'disabled': '' + '">' +
+                              '<a href="/Dregister/students-registers?page=1" class="' + message.currentPage == 1  ? 'disabled': '' + 'btn btn-sm btn-info paginate-btn' + '">Previous</a>'+
+                             '</li>'
+                              for( var i = 1; i <= message.lastPage; i++ ){ 
+                                 '<li class="'+ message.currentPage == i ? 'active' : '' + '">' +
+                                    '<a href="/Dregister/students-registers?page=' + i + '" class="btn btn-sm btn-info paginate-btn">' + i + '</a>' +
+                                 '</li>' 
+                              }
+                              '<li class="' + message.currentPage == message.lastPage ? 'disabled': '' + '">' +
+                                 '<a href="/Dregister/students-registers?page=' + message.currentPage + 1 + '" class="' + message.currentPage == message.lastPage ? 'disabled': '' + 'btn btn-sm btn-info paginate-btn' + '">Lastpage</a>' +
+                              '</li>' +
+                           '</ul>' 
+                           }
+                         '</div>'                      
+                     }             
+                     '</div>');
+                     
+           $('#markRegister').on('click', function(e){
+              e.preventDefault();
+            $('.yesRegister').on('click', function(){
+               var token =$("meta[name='csrf-token']").attr("content");
+               var teacher = $('#teacherName').val();
+               var className= $('#className').val();
+               var week = $('#week').val();
+               var values = {
+                "teacherName" : teacher,
+                "className" : className,
+                "week" : week,
+                "_token": token,
+               }
+               $.ajax({
+                  type: "POST",
+                  url: "/Dregister/students-registers",
+                  data: values,
+               }).done(function(result){
+                var register ='';
+                 if (result.success=='success'){
+                     $('#register').modal('hide');
+                     var register = '<div class="row col-md-12">';
+                     if (result.hasPages) {  
+                        register +='<div class="col-md-6  col-sm-6">'+
+                           '<ul class="pagination">'+
+                              '<li>Showing ' + result.currentPage + ' to ' + result.perPage + ' of ' + result.total + ' entries</li>'+
+                           '</ul>'+                          
+                        '</div>';
+                     }
+                     if (result.hasPages) {
+                        register +='<div class="offset-md-2 col-md-4 offset-sm-2 col-sm-4">';
+                        if( result.lastPage > 1){ 
+                           register += '<ul class="pagination">' +
+                           '<li class="' + (result.currentPage == 1  ? 'disabled': '') + '">' +
+                           '<a href="/Dregister/students-registers?page='+ 1 +'" class="' + (result.currentPage == 1  ? 'disabled' : '') + 'btn btn-sm btn-info paginate-btn">Previous</a>' +
+                           '</li>';
+                           for( var i = 1; i <= result.lastPage; i++ ){ 
+                              register +='<li class="'+ (result.currentPage == i ? 'active' : '') + '">' +
+                              '<a href="/Dregister/students-registers?page=' + i + '" class="btn btn-sm btn-info paginate-btn">' + i + '</a>' +
+                              '</li>'; 
+                           }
+                           register +='<li class="' + (result.currentPage == result.lastPage ? 'disabled': '') + '">' +
+                                 '<a href="/Dregister/students-registers?page=' + (result.currentPage + 1 ) + '" class="' + (result.currentPage == result.lastPage ? 'disabled' : '' ) + 'btn btn-sm btn-info paginate-btn">Lastpage</a>' +
+                              '</li>' +
+                           '</ul>'; 
+                        }
+                        register +='</div>';                      
+                     }
+                     register +='</div>'
+                   $(".table-responsive").prepend(result.message + register );                   
+                 }else if(result.success=='danger'){
+                   $('#register').hide('fast');
+                   $("#update-body").prepend("<div class='status alert alert-danger text-center col-sm-9 offset-sm-1'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times</a><strong >" +result.message+"</strong></div>");               
+                  setTimeout(function(){
+                   location.reload();
+                  }, 6000);               
+                 }
+               });            
+            });
+          })                      
+                     
+                       

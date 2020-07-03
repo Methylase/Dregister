@@ -60,7 +60,7 @@
                      //alert($(this).attr('id'));
                      var id =$(this).attr('id');
                      alert(id);
-                     }
+                     
                  });
                //read = $('.register').attr('id');
                //alert( read);
